@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dev.oscar.powermenuplus">
+    <application
+        android:label="Power Menu Plus"
+        android:allowBackup="false">
+        <provider
+            android:name=".RebootProvider"
+            android:authorities="dev.oscar.powermenuplus.action"
+            android:exported="true" />
+    </application>
+</manifest>
