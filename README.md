@@ -5,7 +5,7 @@ LSPosed (libxposed API 102) module for RedMagic/Nubia **NX809J, Android 16**. Sc
 ## 功能 / Features
 - Power menu: adds **Soft reboot** (`su -c "/data/adb/ksud soft-reboot"`, keeps temporary root) and **Restart SystemUI** under the native reboot button. Needs root granted to this app in KernelSU. / 电源菜单加"软重启"和"重启系统界面"，软重启需在 KernelSU 授权本应用 root。
 - Long-press power opens the **default assistant**: for invocation type 6 it skips ZTE's `AssistManagerAdapt.handleStartAssist`, which only launches the ZTE assistant. / 长按电源键启动默认助理。
-- Hooks: `MfvGlobalActionsDialog$MFVActionsDialog.initView` and the animation methods; `AssistManager.startAssist`. Reverse-engineered from `ls.augment.com` (disable that module's power-menu and assistant options to avoid duplicates). / 参考 `ls.augment.com` 逆向，二者请勿同时启用相同功能。
+- Hooks: `SingleKeyRule.getVeryLongPressTimeoutMs` (system, power menu delay 2 s); `MfvGlobalActionsDialog$MFVActionsDialog.initView` and the animation methods; `AssistManager.startAssist`. Reverse-engineered from `ls.augment.com` (disable that module's power-menu and assistant options to avoid duplicates). / 参考 `ls.augment.com` 逆向，二者请勿同时启用相同功能。
 
 ## 构建 / Build
 `bash build.sh <versionCode> <versionName>` → `PowerMenuPlus-<versionName>.apk`. Every installed build needs a new versionCode/versionName. / 每次安装的构建都要新的版本号。

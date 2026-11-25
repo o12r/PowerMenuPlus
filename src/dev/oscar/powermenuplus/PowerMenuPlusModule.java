@@ -38,6 +38,20 @@ public final class PowerMenuPlusModule extends XposedModule {
         }
     }
 
+    private static final long MENU_MS = 2000;
+
+    /** Power-menu (very long press) delay lives in system_server's SingleKeyRule; shorten it for the power key. */
+    @Override
+    public void onSystemServerStarting(XposedModuleInterface.SystemServerStartingParam p) {
+        try {
+            Class<?> rule = Class.forName("com.android.server.policy.SingleKeyGestureDetector$SingleKeyRule", false, p.getClassLoader());
+            hook(rule.getDeclaredMethod("getVeryLongPressTimeoutMs")).setId("ppm.veryLong")
+                .setExceptionMode(XposedInterface.ExceptionMode.PROTECTIVE).intercept(chain ->
+                    chain.getThisObject().getClass().getName().endsWith("PowerKeyRule") ? (Object) Long.valueOf(MENU_MS) : chain.proceed());
+            Log.i(TAG, "system hook installed");
+        } catch (Throwable t) { Log.e(TAG, "system hook failed", t); }
+    }
+
     private static boolean zh(Context c) {
         return "zh".equals(c.getResources().getConfiguration().getLocales().get(0).getLanguage());
     }
