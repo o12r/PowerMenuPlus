@@ -180,7 +180,10 @@ public final class PowerMenuPlusModule extends XposedModule {
     private void onClick(Dialog dialog, Context ctx, ViewGroup[] btns, int idx, String label) {
         if (!dialog.isShowing()) return;
         if (idx == 1) {                       // restart SystemUI: the persistent process is respawned by the system
-            btns[0].postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 150);
+            // close the menu first so system_server clears its "global actions showing" state; otherwise it
+            // falls back to the AOSP LegacyGlobalActions dialog while SystemUI is respawning
+            dialog.dismiss();
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> android.os.Process.killProcess(android.os.Process.myPid()), 300);
             return;
         }
         for (ViewGroup b : btns) b.setEnabled(false);

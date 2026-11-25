@@ -13,3 +13,7 @@ LSPosed (libxposed API 102) module for RedMagic/Nubia **NX809J, Android 16**. Sc
 ## 相关项目 / Related project
 - **[RecognitionStub](../RecognitionStub)** — UI-less placeholder `RecognitionService`. Without it, a soft reboot can wipe `voice_interaction_service`, so the assistant is not bound and the key only vibrates. Install it and run `settings put secure voice_recognition_service dev.oscar.recogstub/.StubRecognitionService`. Also needs `power_button_long_press=5`, `power_button_very_long_press=1`, `voice_assistant_powerkey_control_halo=0`.
   RecognitionStub 保证开机后助理仍被绑定；本模块保证按键能拉起助理。二者独立，建议同装。
+
+## 注意 / Note
+- **应用需要 root 授权来运行软重启**：请在 KernelSU 管理器的“超级用户”里给 Power Menu Plus 授权，否则 `su` 对它不可见，软重启会报 “Cannot run program su”。
+- **The app needs root permission to run Soft reboot**: grant Power Menu Plus root in the KernelSU manager (Superuser tab); otherwise `su` is invisible to it and Soft reboot fails with "Cannot run program su".
