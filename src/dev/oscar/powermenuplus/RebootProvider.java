@@ -34,7 +34,7 @@ public final class RebootProvider extends ContentProvider {
             busy = true;
         }
         try {
-            Process p = new ProcessBuilder("su", "-c", COMMAND).redirectErrorStream(true).start();
+            Process p = new ProcessBuilder(suPath(), "-c", COMMAND).redirectErrorStream(true).start();
             // A successful soft reboot kills this very process, so "still running" counts as accepted.
             if (p.waitFor(4, TimeUnit.SECONDS)) {
                 int code = p.exitValue();
@@ -56,4 +56,10 @@ public final class RebootProvider extends ContentProvider {
     @Override public Uri insert(Uri u, ContentValues v) { return null; }
     @Override public int delete(Uri u, String s, String[] a) { return 0; }
     @Override public int update(Uri u, ContentValues v, String s, String[] a) { return 0; }
+
+    private static String suPath() {
+        String[] c = {"/system/bin/su", "/system/xbin/su", "/debug_ramdisk/su", "/data/adb/ksu/bin/su", "/data/adb/ap/bin/su", "/sbin/su", "/product/bin/su", "/vendor/bin/su"};
+        for (String f : c) if (new java.io.File(f).canExecute()) return f;
+        return "su";
+    }
 }
